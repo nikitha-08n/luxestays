@@ -9,12 +9,19 @@ const firebaseConfig = {
     appId: "1:1015188177573:web:11e099da859820750a034c"
 };
 
-// Initialize Firebase
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+// Initialize Firebase safely so the app doesn't crash if offline
+let auth = null;
+let googleProvider = null;
+
+try {
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+        googleProvider = new firebase.auth.GoogleAuthProvider();
+    }
+} catch (err) {
+    console.error("Firebase failed to load:", err);
 }
-const auth = firebase.auth();
-const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 // Mock Property Data
 const properties = [
@@ -242,6 +249,12 @@ window.handleSignIn = function() {
 window.handleGoogleSignIn = function() {
     const btn = document.querySelectorAll('.social-btn')[1];
     const originalText = btn.innerHTML;
+    
+    if (!auth || !googleProvider) {
+        alert("Google Sign-In is unavailable because Firebase failed to load. Are you offline or opening the file directly without a server?");
+        return;
+    }
+
     btn.innerHTML = '<span class="spinner"></span> Connecting...';
     btn.disabled = true;
 
