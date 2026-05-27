@@ -165,15 +165,78 @@ window.navigateTo = function(viewId) {
         window.scrollTo(0, 0);
     }
     
-    // Update nav active states (simplified)
+    // Update nav active states
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
     });
     
-    // Quick active state hack based on view
+    // Quick active state based on view
     if(viewId === 'search-view') {
         document.querySelectorAll('.nav-link')[0].classList.add('active');
     }
+
+    // Hide nav & footer on signin page
+    const navbar = document.querySelector('.navbar');
+    const footer = document.querySelector('.footer');
+    if (viewId === 'signin-view') {
+        navbar.style.display = 'none';
+        if (footer) footer.style.display = 'none';
+    } else {
+        navbar.style.display = 'flex';
+        if (footer) footer.style.display = 'block';
+    }
+};
+
+// Sign In Handler
+window.handleSignIn = function() {
+    const email = document.getElementById('signin-email').value.trim();
+    const password = document.getElementById('signin-password').value.trim();
+    const btn = document.querySelector('#signin-view .btn-dark');
+
+    if (!email || !password) {
+        btn.textContent = 'Please fill in all fields';
+        btn.style.background = '#ef4444';
+        setTimeout(() => {
+            btn.textContent = 'Sign In';
+            btn.style.background = '';
+        }, 2000);
+        return;
+    }
+
+    // Show loading state
+    btn.innerHTML = '<span class="spinner"></span> Signing in...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = 'Sign In';
+
+        // Update nav button to show signed-in state
+        const navBtn = document.getElementById('nav-signin-btn');
+        if (navBtn) {
+            const name = email.split('@')[0];
+            const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+            navBtn.textContent = `👤 ${displayName}`;
+            navBtn.onclick = () => navigateTo('dashboard-view');
+        }
+
+        // Navigate to home
+        navigateTo('home-view');
+    }, 1200);
+};
+
+// Toggle password visibility
+window.togglePassword = function() {
+    const input = document.getElementById('signin-password');
+    const icon = document.getElementById('eye-icon');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.setAttribute('data-lucide', 'eye-off');
+    } else {
+        input.type = 'password';
+        icon.setAttribute('data-lucide', 'eye');
+    }
+    lucide.createIcons();
 };
 
 // Initialize app
@@ -184,4 +247,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Render All properties on Search page
     renderProperties('search-properties-grid', properties);
+
+    // Since signin-view is the first active view, hide navbar & footer initially
+    const navbar = document.querySelector('.navbar');
+    const footer = document.querySelector('.footer');
+    if (navbar) navbar.style.display = 'none';
+    if (footer) footer.style.display = 'none';
 });
