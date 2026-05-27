@@ -1061,13 +1061,80 @@ body.signin-page .footer {
     flex: 1;
 }
 
-/* ---- Left form card ---- */
+/* ---- LEFT: Hero Image ---- */
+.signin-hero {
+    background:
+        linear-gradient(to top, rgba(5,10,20,0.92) 0%, rgba(5,10,20,0.5) 50%, rgba(5,10,20,0.25) 100%),
+        url('https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+.signin-hero-top {
+    display: flex;
+    align-items: center;
+}
+
+.hero-brand {
+    font-size: 1.25rem;
+    letter-spacing: 0.15em;
+    color: #fff;
+    font-weight: 700;
+}
+
+.signin-hero-bottom {
+    color: white;
+}
+
+.signin-hero-bottom h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+.hero-pills {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    padding: 0.45rem 1rem;
+    border-radius: 100px;
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+
+.hero-pill i { width: 14px; height: 14px; }
+
+/* ---- RIGHT: Form Panel ---- */
 .signin-card {
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 4rem;
     background: var(--bg-white);
+    overflow-y: auto;
+}
+
+.signin-form-inner {
+    max-width: 400px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .signin-logo {
@@ -1087,31 +1154,31 @@ body.signin-page .footer {
 
 .signin-sub {
     color: var(--text-muted);
-    margin-bottom: 2.5rem;
-    font-size: 1rem;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
 }
 
 .signin-form {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    max-width: 420px;
+    gap: 1.1rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .form-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
 }
 
 .form-input {
-    padding: 0.875rem 1rem;
+    padding: 0.8rem 1rem;
     border: 1.5px solid var(--border-color);
     border-radius: var(--radius-md);
     font-family: var(--font-sans);
@@ -1155,14 +1222,21 @@ body.signin-page .footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 0.88rem;
+}
+
+.signin-btn {
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
 }
 
 .signin-divider {
     text-align: center;
     position: relative;
     color: var(--text-muted);
-    font-size: 0.85rem;
-    margin: 0.25rem 0;
+    font-size: 0.82rem;
+    margin: 0.15rem 0;
 }
 
 .signin-divider::before,
@@ -1170,7 +1244,7 @@ body.signin-page .footer {
     content: '';
     position: absolute;
     top: 50%;
-    width: 36%;
+    width: 35%;
     height: 1px;
     background: var(--border-color);
 }
@@ -1186,16 +1260,39 @@ body.signin-page .footer {
 
 .social-btn {
     gap: 0.5rem;
-    font-size: 0.9rem;
-    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-md);
+    transition: all 0.2s;
+}
+
+.social-btn:hover {
+    background: var(--bg-main);
+    border-color: var(--text-dark);
 }
 
 .signup-prompt {
     text-align: center;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: var(--text-muted);
-    margin-top: 0.25rem;
 }
+
+.link-text-dark {
+    color: var(--text-dark);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.guest-link {
+    text-align: center;
+    font-size: 0.82rem;
+    color: var(--accent);
+    cursor: pointer;
+    text-decoration: underline;
+    transition: opacity 0.2s;
+}
+
+.guest-link:hover { opacity: 0.7; }
 
 /* Spinner for loading state */
 .spinner {
@@ -1212,58 +1309,9 @@ body.signin-page .footer {
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ---- Right hero panel ---- */
-.signin-hero {
-    background:
-        linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.2) 100%),
-        url('https://images.unsplash.com/photo-1613490908592-fd5e16f310f8?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
-    display: flex;
-    align-items: flex-end;
-    padding: 4rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.signin-hero-content {
-    position: relative;
-    z-index: 1;
-    color: white;
-}
-
-.signin-hero-content h3 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
-    line-height: 1.2;
-}
-
-.signin-hero-content > p {
-    color: #94a3b8;
-    font-size: 1rem;
-    margin-bottom: 2.5rem;
-    line-height: 1.6;
-}
-
-.signin-stats {
-    display: flex;
-    gap: 3rem;
-}
-
-.signin-stat-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #fff;
-}
-
-.signin-stat-label {
-    font-size: 0.85rem;
-    color: #64748b;
-    margin-top: 0.25rem;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
     .signin-overlay { grid-template-columns: 1fr; }
-    .signin-hero { display: none; }
+    .signin-hero { min-height: 220px; }
     .signin-card { padding: 2.5rem 1.5rem; }
 }

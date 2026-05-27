@@ -221,6 +221,44 @@ window.handleSignIn = function() {
     }, 1200);
 };
 
+window.handleGoogleSignIn = function() {
+    const btn = document.querySelectorAll('.social-btn')[1];
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner"></span> Connecting...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        
+        const navBtn = document.getElementById('nav-signin-btn');
+        if (navBtn) {
+            navBtn.textContent = '👤 Guest';
+            navBtn.onclick = () => navigateTo('dashboard-view');
+        }
+        navigateTo('home-view');
+    }, 1000);
+};
+
+window.handleAppleSignIn = function() {
+    const btn = document.querySelectorAll('.social-btn')[0];
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<span class="spinner"></span> Connecting...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+        
+        const navBtn = document.getElementById('nav-signin-btn');
+        if (navBtn) {
+            navBtn.textContent = '👤 Guest';
+            navBtn.onclick = () => navigateTo('dashboard-view');
+        }
+        navigateTo('home-view');
+    }, 1000);
+};
+
 // Toggle password visibility
 window.togglePassword = function() {
     const input = document.getElementById('signin-password');
