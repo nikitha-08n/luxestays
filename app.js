@@ -175,15 +175,11 @@ window.navigateTo = function(viewId) {
         document.querySelectorAll('.nav-link')[0].classList.add('active');
     }
 
-    // Hide nav & footer on signin page
-    const navbar = document.querySelector('.navbar');
-    const footer = document.querySelector('.footer');
+    // Hide nav & footer on signin page using CSS body class
     if (viewId === 'signin-view') {
-        navbar.style.display = 'none';
-        if (footer) footer.style.display = 'none';
+        document.body.classList.add('signin-page');
     } else {
-        navbar.style.display = 'flex';
-        if (footer) footer.style.display = 'block';
+        document.body.classList.remove('signin-page');
     }
 };
 
@@ -248,9 +244,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render All properties on Search page
     renderProperties('search-properties-grid', properties);
 
-    // Since signin-view is the first active view, hide navbar & footer initially
-    const navbar = document.querySelector('.navbar');
-    const footer = document.querySelector('.footer');
-    if (navbar) navbar.style.display = 'none';
-    if (footer) footer.style.display = 'none';
+    // Since signin-view is the first active view, add body class to hide nav/footer
+    document.body.classList.add('signin-page');
 });

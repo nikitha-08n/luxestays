@@ -204,6 +204,19 @@ h6 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; color: var(--a
     display: block;
 }
 
+/* Sign-in view needs flex to allow full-height grid child */
+#signin-view.active {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Hide navbar & footer on signin page using body class */
+body.signin-page .navbar,
+body.signin-page .footer {
+    display: none !important;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -1038,7 +1051,6 @@ h6 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; color: var(--a
 
 /* ================== SIGN IN VIEW ================== */
 #signin-view {
-    min-height: 100vh;
     background: var(--bg-white);
 }
 
@@ -1046,6 +1058,7 @@ h6 { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; color: var(--a
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-height: 100vh;
+    flex: 1;
 }
 
 /* ---- Left form card ---- */
