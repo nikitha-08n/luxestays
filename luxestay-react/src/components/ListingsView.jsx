@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Plus, Settings, TrendingUp, Star, Users, ArrowLeft, UploadCloud, Image as ImageIcon } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Plus, Settings, TrendingUp, Star, Users, ArrowLeft, UploadCloud, Image as ImageIcon, MapPin, DollarSign, Calendar } from 'lucide-react';
 import { formatPrice } from '../data/mockData';
 
 const ListingsView = ({ navigateTo }) => {
@@ -37,10 +37,9 @@ const ListingsView = ({ navigateTo }) => {
     const [isAddingProperty, setIsAddingProperty] = useState(false);
     const [activeFilter, setActiveFilter] = useState('All');
     const [hoveredListing, setHoveredListing] = useState(null);
-    const [showAnalytics, setShowAnalytics] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [activeStat, setActiveStat] = useState(null);
-
+    
     // Form submission handler
     const handleAddPropertySubmit = (e) => {
         e.preventDefault();
@@ -101,104 +100,107 @@ const ListingsView = ({ navigateTo }) => {
                 d="M0 15 Q 10 5, 20 12 T 40 8 T 60 15" 
                 fill="none" 
                 stroke={color} 
-                strokeWidth="2" 
+                strokeWidth="2.5" 
                 strokeLinecap="round"
+                className="sparkline-path"
             />
         </svg>
     );
 
     if (isAddingProperty) {
         return (
-            <main className="view active" style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-                <div style={{ marginBottom: '2rem' }}>
-                    <button className="btn btn-outline btn-sm" onClick={() => setIsAddingProperty(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+            <main className="view active animate-fade-up" style={{ padding: '3rem 2rem', maxWidth: '850px', margin: '0 auto' }}>
+                <div style={{ marginBottom: '3rem' }}>
+                    <button className="btn btn-outline btn-sm" onClick={() => setIsAddingProperty(false)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem', borderRadius: '100px', padding: '0.5rem 1.25rem' }}>
                         <ArrowLeft size={16} /> Back to Portfolio
                     </button>
-                    <h1 style={{ fontSize: '2rem', margin: 0 }}>Add New Property</h1>
-                    <p className="muted">Provide details to list your property on the LuxeStay network.</p>
+                    <h1 style={{ fontSize: '2.5rem', margin: 0, fontWeight: 700, color: 'var(--primary-dark)' }}>Add New Property</h1>
+                    <p className="muted" style={{ fontSize: '1.1rem', marginTop: '0.5rem' }}>Provide details to list your property on the LuxeStay network.</p>
                 </div>
 
-                <div style={{ background: 'var(--bg-white)', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
+                <div className="glass-panel" style={{ background: 'white', padding: '3rem' }}>
                     <form onSubmit={handleAddPropertySubmit}>
                         
                         {/* Section: Basic Info */}
-                        <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Basic Information</h3>
+                        <h3 style={{ borderBottom: '2px solid #f1f5f9', paddingBottom: '1rem', marginBottom: '2rem', fontSize: '1.25rem', color: 'var(--primary-dark)' }}>Basic Information</h3>
                         
-                        <div className="input-group" style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>PROPERTY TITLE</label>
-                            <input name="title" type="text" required placeholder="e.g. Skyline Penthouse" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', marginTop: '0.5rem' }} />
+                        <div style={{ marginBottom: '2rem' }}>
+                            <label className="premium-label">PROPERTY TITLE</label>
+                            <input name="title" type="text" className="premium-input" required placeholder="e.g. Skyline Penthouse" />
                         </div>
 
-                        <div className="input-group" style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>DESCRIPTION</label>
-                            <textarea name="description" required rows="4" placeholder="Describe what makes your property unique..." style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', marginTop: '0.5rem', fontFamily: 'inherit' }}></textarea>
+                        <div style={{ marginBottom: '2rem' }}>
+                            <label className="premium-label">DESCRIPTION</label>
+                            <textarea name="description" className="premium-input" required rows="4" placeholder="Describe what makes your property unique..."></textarea>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2.5rem' }}>
-                            <div className="input-group">
-                                <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>PROPERTY TYPE</label>
-                                <select name="type" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', marginTop: '0.5rem', background: 'transparent' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '3rem' }}>
+                            <div>
+                                <label className="premium-label">PROPERTY TYPE</label>
+                                <select name="type" className="premium-input" style={{ appearance: 'none', background: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%2364748b\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpolyline points=\'6 9 12 15 18 9\'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 1rem center / 1rem' }}>
                                     <option>Apartment</option>
                                     <option>Penthouse</option>
                                     <option>Villa / Estate</option>
                                     <option>Townhouse</option>
                                 </select>
                             </div>
-                            <div className="input-group">
-                                <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>NIGHTLY PRICE (₹)</label>
-                                <input name="price" type="number" required placeholder="e.g. 100000" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', marginTop: '0.5rem' }} />
+                            <div>
+                                <label className="premium-label">NIGHTLY PRICE (₹)</label>
+                                <input name="price" type="number" className="premium-input" required placeholder="e.g. 100000" />
                             </div>
                         </div>
 
                         {/* Section: Location */}
-                        <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Location</h3>
+                        <h3 style={{ borderBottom: '2px solid #f1f5f9', paddingBottom: '1rem', marginBottom: '2rem', fontSize: '1.25rem', color: 'var(--primary-dark)' }}>Location</h3>
                         
-                        <div className="input-group" style={{ marginBottom: '1.5rem' }}>
-                            <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>STREET ADDRESS</label>
-                            <input name="address" type="text" required placeholder="123 Luxury Ave" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', marginTop: '0.5rem' }} />
+                        <div style={{ marginBottom: '2rem' }}>
+                            <label className="premium-label">STREET ADDRESS</label>
+                            <input name="address" type="text" className="premium-input" required placeholder="123 Luxury Ave" />
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '1.5rem', marginBottom: '2.5rem' }}>
-                            <div className="input-group">
-                                <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>CITY</label>
-                                <input name="city" type="text" required placeholder="New York" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', marginTop: '0.5rem' }} />
+                        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', gap: '2rem', marginBottom: '3rem' }}>
+                            <div>
+                                <label className="premium-label">CITY</label>
+                                <input name="city" type="text" className="premium-input" required placeholder="New York" />
                             </div>
-                            <div className="input-group">
-                                <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>STATE</label>
-                                <input name="state" type="text" required placeholder="NY" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', marginTop: '0.5rem' }} />
+                            <div>
+                                <label className="premium-label">STATE</label>
+                                <input name="state" type="text" className="premium-input" required placeholder="NY" />
                             </div>
-                            <div className="input-group">
-                                <label style={{ fontSize: '0.85rem', fontWeight: 600 }}>ZIP CODE</label>
-                                <input name="zip" type="text" required placeholder="10001" style={{ width: '100%', padding: '0.75rem', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', marginTop: '0.5rem' }} />
+                            <div>
+                                <label className="premium-label">ZIP CODE</label>
+                                <input name="zip" type="text" className="premium-input" required placeholder="10001" />
                             </div>
                         </div>
 
                         {/* Section: Amenities */}
-                        <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>Premium Amenities</h3>
+                        <h3 style={{ borderBottom: '2px solid #f1f5f9', paddingBottom: '1rem', marginBottom: '2rem', fontSize: '1.25rem', color: 'var(--primary-dark)' }}>Premium Amenities</h3>
                         
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2.5rem' }}>
-                            <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><input type="checkbox" /> <span>High-Speed WiFi</span></label>
-                            <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><input type="checkbox" /> <span>Private Pool</span></label>
-                            <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><input type="checkbox" /> <span>Home Gym</span></label>
-                            <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><input type="checkbox" /> <span>Valet Parking</span></label>
-                            <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><input type="checkbox" /> <span>Smart Home System</span></label>
-                            <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><input type="checkbox" /> <span>24/7 Security</span></label>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
+                            <label className="checkbox-label"><input type="checkbox" /> <span>High-Speed WiFi</span></label>
+                            <label className="checkbox-label"><input type="checkbox" /> <span>Private Pool</span></label>
+                            <label className="checkbox-label"><input type="checkbox" /> <span>Home Gym</span></label>
+                            <label className="checkbox-label"><input type="checkbox" /> <span>Valet Parking</span></label>
+                            <label className="checkbox-label"><input type="checkbox" /> <span>Smart Home System</span></label>
+                            <label className="checkbox-label"><input type="checkbox" /> <span>24/7 Security</span></label>
                         </div>
 
                         {/* Section: Media */}
-                        <h3 style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>High-Quality Media</h3>
+                        <h3 style={{ borderBottom: '2px solid #f1f5f9', paddingBottom: '1rem', marginBottom: '2rem', fontSize: '1.25rem', color: 'var(--primary-dark)' }}>High-Quality Media</h3>
                         
                         <div style={{ 
                             border: '2px dashed var(--border-color)', 
-                            borderRadius: 'var(--radius-md)', 
-                            padding: '3rem', 
+                            borderRadius: 'var(--radius-lg)', 
+                            padding: '4rem 2rem', 
                             textAlign: 'center', 
-                            marginBottom: '2.5rem',
-                            background: '#f8fafc'
-                        }}>
-                            <UploadCloud size={40} style={{ margin: '0 auto 1rem', color: 'var(--text-muted)' }} />
-                            <h4 style={{ margin: '0 0 0.5rem 0' }}>Drag & drop high-resolution photos here</h4>
-                            <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>Minimum 1920x1080px required. Up to 20 images.</p>
+                            marginBottom: '3rem',
+                            background: '#f8fafc',
+                            transition: 'all 0.3s ease',
+                            cursor: 'pointer'
+                        }} className="hover-lift">
+                            <UploadCloud size={48} style={{ margin: '0 auto 1.5rem', color: 'var(--accent)' }} />
+                            <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.2rem', fontWeight: 600 }}>Drag & drop high-resolution photos here</h4>
+                            <p className="muted" style={{ margin: 0, fontSize: '0.9rem' }}>Minimum 1920x1080px required. Up to 20 images.</p>
                             
                             <input 
                                 type="file" 
@@ -207,15 +209,15 @@ const ListingsView = ({ navigateTo }) => {
                                 accept="image/*" 
                                 style={{ display: 'none' }} 
                             />
-                            <label htmlFor="property-images" className="btn btn-outline btn-sm" style={{ marginTop: '1.5rem', display: 'inline-block', cursor: 'pointer' }}>
+                            <label htmlFor="property-images" className="btn btn-outline" style={{ marginTop: '2rem', display: 'inline-block', cursor: 'pointer', borderRadius: '100px', padding: '0.75rem 2rem' }}>
                                 Browse Files
                             </label>
                         </div>
 
                         {/* Form Actions */}
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.5rem' }}>
-                            <button type="button" className="btn btn-outline" onClick={() => setIsAddingProperty(false)}>Cancel</button>
-                            <button type="submit" className="btn btn-dark">Publish Listing</button>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '1rem', borderTop: '2px solid #f1f5f9', paddingTop: '2rem' }}>
+                            <button type="button" className="btn btn-outline" style={{ padding: '1rem 2rem', borderRadius: '100px' }} onClick={() => setIsAddingProperty(false)}>Cancel</button>
+                            <button type="submit" className="btn btn-dark" style={{ padding: '1rem 2.5rem', borderRadius: '100px', fontWeight: 600 }}>Publish Listing</button>
                         </div>
                     </form>
                 </div>
@@ -224,51 +226,46 @@ const ListingsView = ({ navigateTo }) => {
     }
 
     return (
-        <main className="view active" style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-            <div className="section-header flex-between" style={{ marginBottom: '2rem' }}>
+        <main className="view active" style={{ padding: '3rem 2rem', maxWidth: '1400px', margin: '0 auto' }}>
+            <div className="section-header flex-between animate-fade-up" style={{ marginBottom: '3rem' }}>
                 <div>
-                    <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Your Portfolio</h1>
-                    <p className="muted">Manage your premium properties and track performance.</p>
+                    <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', fontWeight: 700 }}>Your Portfolio</h1>
+                    <p className="muted" style={{ fontSize: '1.1rem' }}>Manage your premium properties and track performance.</p>
                 </div>
-                <button className="btn btn-dark" onClick={() => setIsAddingProperty(true)}>
-                    <Plus size={18} /> Add New Property
+                <button className="btn btn-dark animate-slide-right" style={{ padding: '1rem 2rem', borderRadius: '100px', fontSize: '1rem', fontWeight: 600, boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }} onClick={() => setIsAddingProperty(true)}>
+                    <Plus size={20} /> Add New Property
                 </button>
             </div>
 
             {/* Host Stats */}
-            <div className="stats-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
+            <div className="stats-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
                 {[
-                    { id: 'earnings', label: 'TOTAL EARNINGS (MTD)', value: '₹14,00,000', sub: '+12% from last month', icon: <TrendingUp size={14} />, color: 'text-green' },
-                    { id: 'rating', label: 'OVERALL RATING', value: '4.92', sub: 'Superhost Status', icon: <Star size={14} />, color: 'muted' },
-                    { id: 'guests', label: 'UPCOMING GUESTS', value: '14', sub: 'Next check-in tomorrow', icon: <Users size={14} />, color: 'muted' }
-                ].map(stat => (
+                    { id: 'earnings', label: 'TOTAL EARNINGS (MTD)', value: '₹14,00,000', sub: '+12% from last month', icon: <TrendingUp size={16} />, color: 'text-green', delay: '100' },
+                    { id: 'rating', label: 'OVERALL RATING', value: '4.92', sub: 'Superhost Status', icon: <Star size={16} />, color: 'muted', delay: '200' },
+                    { id: 'guests', label: 'UPCOMING GUESTS', value: '14', sub: 'Next check-in tomorrow', icon: <Users size={16} />, color: 'muted', delay: '300' }
+                ].map((stat, i) => (
                     <div 
                         key={stat.id}
                         onClick={() => setActiveStat(activeStat === stat.id ? null : stat.id)}
-                        className={`stat-card ${activeStat === stat.id ? 'active' : ''}`} 
-                        style={{ 
-                            background: 'var(--bg-white)', 
-                            border: activeStat === stat.id ? '2px solid var(--accent-color, #3b82f6)' : '1px solid var(--border-color)',
-                            padding: '1.5rem',
-                            borderRadius: 'var(--radius-lg)',
-                            cursor: 'pointer',
-                            transition: 'all 0.2s ease',
-                            transform: activeStat === stat.id ? 'translateY(-4px)' : 'none',
-                            boxShadow: activeStat === stat.id ? '0 10px 25px -5px rgba(0, 0, 0, 0.1)' : 'none'
-                        }}
+                        className={`stat-card-premium animate-fade-up animate-delay-${stat.delay} ${activeStat === stat.id ? 'active' : ''}`} 
                     >
-                        <div className="stat-label" style={{ fontSize: '0.7rem', fontWeight: 700, color: '#64748b', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>{stat.label}</div>
-                        <div className="stat-value text-dark" style={{ fontSize: '2.25rem', fontWeight: 800, marginBottom: '0.25rem' }}>{stat.value}</div>
-                        <div className={`stat-sub ${stat.color}`} style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.85rem' }}>
-                            {stat.icon} {stat.sub}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
+                            <div className="stat-label" style={{ fontSize: '0.75rem', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.05em' }}>{stat.label}</div>
+                            <div style={{ padding: '0.5rem', background: '#f8fafc', borderRadius: '50%', color: stat.id === 'earnings' ? 'var(--accent)' : 'var(--primary-dark)' }}>
+                                {stat.icon}
+                            </div>
+                        </div>
+                        <div className="stat-value text-dark" style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>{stat.value}</div>
+                        <div className={`stat-sub ${stat.color}`} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 500 }}>
+                            {stat.sub}
                         </div>
                         
                         {activeStat === stat.id && (
-                            <div style={{ marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid #f1f5f9', animation: 'fadeIn 0.3s ease' }}>
-                                <p style={{ fontSize: '0.8rem', margin: 0, color: '#64748b' }}>
-                                    {stat.id === 'earnings' ? 'Average daily revenue is up by ₹4,200 this week.' : 
-                                     stat.id === 'rating' ? 'Based on 48 reviews. You are in the top 5% of hosts.' : 
-                                     '7 properties are fully booked for the upcoming weekend.'}
+                            <div className="animate-fade-up" style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid #f1f5f9' }}>
+                                <p style={{ fontSize: '0.9rem', margin: 0, color: '#64748b', lineHeight: 1.5 }}>
+                                    {stat.id === 'earnings' ? 'Average daily revenue is up by ₹4,200 this week. Consider adjusting weekend rates.' : 
+                                     stat.id === 'rating' ? 'Based on 48 verified reviews. You are in the top 5% of all luxury hosts.' : 
+                                     '7 properties are fully booked for the upcoming weekend. 2 maintenance requests pending.'}
                                 </p>
                             </div>
                         )}
@@ -277,47 +274,42 @@ const ListingsView = ({ navigateTo }) => {
             </div>
 
             {/* Listings Table / Grid */}
-            <div style={{ background: 'var(--bg-white)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-color)', overflow: 'hidden', transition: 'all 0.3s ease' }}>
-                <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem' }}>
+            <div className="glass-panel animate-fade-up animate-delay-400" style={{ background: 'white', overflow: 'hidden' }}>
+                <div style={{ padding: '2rem', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.5rem', background: '#f8fafc' }}>
                     <div>
-                        <h3 style={{ margin: 0 }}>Manage Listings</h3>
-                        <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.8rem', color: '#64748b' }}>{filteredListings.length} properties found</p>
+                        <h3 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 700 }}>Manage Listings</h3>
+                        <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', color: '#64748b' }}>{filteredListings.length} properties found</p>
                     </div>
                     
-                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flex: 1, justifyContent: 'flex-end', minWidth: '300px' }}>
-                        <div style={{ position: 'relative', flex: 1, maxWidth: '300px' }}>
-                            <Settings size={16} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flex: 1, justifyContent: 'flex-end', minWidth: '350px' }}>
+                        <div style={{ position: 'relative', flex: 1, maxWidth: '350px' }}>
+                            <Settings size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
                             <input 
                                 type="text" 
-                                placeholder="Search property name..." 
+                                placeholder="Search property name or location..." 
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                style={{ 
-                                    width: '100%', 
-                                    padding: '0.6rem 1rem 0.6rem 2.5rem', 
-                                    border: '1px solid #e2e8f0', 
-                                    borderRadius: 'var(--radius-md)',
-                                    fontSize: '0.85rem'
-                                }} 
+                                className="premium-input"
+                                style={{ padding: '0.75rem 1rem 0.75rem 3rem', background: 'white' }}
                             />
                         </div>
                         
-                        <div className="filter-tabs" style={{ display: 'flex', gap: '0.25rem', background: '#f1f5f9', padding: '0.2rem', borderRadius: 'var(--radius-md)' }}>
+                        <div className="filter-tabs" style={{ display: 'flex', gap: '0.25rem', background: '#e2e8f0', padding: '0.3rem', borderRadius: '100px' }}>
                         {['All', 'Active', 'Pending Review', 'Paused'].map(filter => (
                             <button
                                 key={filter}
                                 onClick={() => setActiveFilter(filter)}
                                 style={{
-                                    padding: '0.4rem 1rem',
+                                    padding: '0.5rem 1.25rem',
                                     border: 'none',
-                                    borderRadius: 'var(--radius-sm)',
+                                    borderRadius: '100px',
                                     fontSize: '0.85rem',
                                     fontWeight: 600,
                                     cursor: 'pointer',
                                     backgroundColor: activeFilter === filter ? 'white' : 'transparent',
-                                    color: activeFilter === filter ? 'var(--text-dark)' : 'var(--text-muted)',
-                                    boxShadow: activeFilter === filter ? '0 2px 4px rgba(0,0,0,0.05)' : 'none',
-                                    transition: 'all 0.2s ease'
+                                    color: activeFilter === filter ? 'var(--primary-dark)' : '#64748b',
+                                    boxShadow: activeFilter === filter ? '0 2px 10px rgba(0,0,0,0.1)' : 'none',
+                                    transition: 'all 0.3s ease'
                                 }}
                             >
                                 {filter}
@@ -327,74 +319,71 @@ const ListingsView = ({ navigateTo }) => {
                     </div>
                 </div>
                 
-                <div style={{ padding: '0.5rem' }}>
+                <div style={{ padding: '1rem' }}>
                     {filteredListings.length === 0 ? (
-                        <div style={{ padding: '5rem 3rem', textAlign: 'center' }}>
-                            <ImageIcon size={48} style={{ margin: '0 auto 1.5rem', color: 'var(--border-color)' }} />
-                            <h4 style={{ color: 'var(--text-muted)', marginBottom: '0.5rem' }}>No {activeFilter !== 'All' ? activeFilter.toLowerCase() : ''} properties found.</h4>
-                            <p className="muted" style={{ fontSize: '0.9rem' }}>Try changing your filter or add a new property to your portfolio.</p>
+                        <div className="animate-fade-up" style={{ padding: '6rem 3rem', textAlign: 'center' }}>
+                            <ImageIcon size={64} style={{ margin: '0 auto 1.5rem', color: '#cbd5e1' }} />
+                            <h4 style={{ color: '#64748b', marginBottom: '1rem', fontSize: '1.25rem' }}>No {activeFilter !== 'All' ? activeFilter.toLowerCase() : ''} properties found.</h4>
+                            <p className="muted" style={{ fontSize: '1rem' }}>Try changing your filter or add a new property to your portfolio.</p>
                         </div>
                     ) : (
-                        filteredListings.map(listing => (
-                            <div 
-                                key={listing.id} 
-                                onMouseEnter={() => setHoveredListing(listing.id)}
-                                onMouseLeave={() => setHoveredListing(null)}
-                                style={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    padding: '1.25rem', 
-                                    borderBottom: '1px solid #f1f5f9', 
-                                    gap: '1.5rem',
-                                    backgroundColor: hoveredListing === listing.id ? '#f8fafc' : 'transparent',
-                                    transition: 'background-color 0.2s ease',
-                                    position: 'relative'
-                                }}
-                            >
-                                <img src={listing.image} alt={listing.title} style={{ width: '100px', height: '70px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />
-                                
-                                <div style={{ flex: 2 }}>
-                                    <h4 style={{ margin: '0 0 0.25rem 0' }}>{listing.title}</h4>
-                                    <div className="muted" style={{ fontSize: '0.85rem' }}>{listing.location}</div>
-                                </div>
-
-                                <div style={{ flex: 1 }}>
-                                    <span className={`badge ${listing.statusColor}`}>{listing.status}</span>
-                                </div>
-
-                                <div style={{ flex: 1, textAlign: 'right' }}>
-                                    <div style={{ fontWeight: 600 }}>{formatPrice(listing.price)} {listing.priceType}</div>
-                                    {listing.rating > 0 ? (
-                                        <div className="muted" style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.25rem' }}><Star size={12} className="star-icon" /> {listing.rating}</div>
-                                    ) : (
-                                        <div className="muted" style={{ fontSize: '0.85rem' }}>No reviews yet</div>
-                                    )}
-                                </div>
-
-                                <div style={{ flex: 1, textAlign: 'right' }}>
-                                    <div className="muted" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '0.25rem' }}>Earnings</div>
-                                    <div style={{ fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem' }}>
-                                        {formatPrice(listing.earnings)}
-                                        {listing.status === 'Active' && <Sparkline color="#10b981" />}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            {filteredListings.map((listing, idx) => (
+                                <div 
+                                    key={listing.id} 
+                                    className={`property-row-premium animate-fade-up`}
+                                    style={{ animationDelay: `${idx * 100}ms` }}
+                                    onMouseEnter={() => setHoveredListing(listing.id)}
+                                    onMouseLeave={() => setHoveredListing(null)}
+                                >
+                                    <div className="property-img-wrap">
+                                        <img src={listing.image} alt={listing.title} />
+                                        {listing.status === 'Active' && <div style={{ position: 'absolute', top: '0.5rem', left: '0.5rem', width: '10px', height: '10px', background: 'var(--accent)', borderRadius: '50%', border: '2px solid white', boxShadow: '0 0 0 2px rgba(16,185,129,0.2)' }}></div>}
                                     </div>
-                                </div>
+                                    
+                                    <div>
+                                        <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1.1rem', fontWeight: 700 }}>{listing.title}</h4>
+                                        <div className="muted" style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}><MapPin size={14} /> {listing.location}</div>
+                                    </div>
 
-                                <div>
-                                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                        {hoveredListing === listing.id && (
-                                            <button 
-                                                className="btn btn-outline btn-sm" 
-                                                onClick={() => toggleStatus(listing.id)}
-                                                style={{ fontSize: '0.75rem', padding: '0.25rem 0.6rem' }}
-                                            >
-                                                {listing.status === 'Active' ? 'Pause' : 'Resume'}
-                                            </button>
+                                    <div>
+                                        <span className={`badge ${listing.statusColor}`} style={{ padding: '0.4rem 1rem', fontSize: '0.8rem', borderRadius: '100px' }}>{listing.status}</span>
+                                    </div>
+
+                                    <div>
+                                        <div style={{ fontWeight: 700, fontSize: '1.1rem', marginBottom: '0.25rem' }}>{formatPrice(listing.price)} <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 500 }}>{listing.priceType}</span></div>
+                                        {listing.rating > 0 ? (
+                                            <div style={{ fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#f59e0b', fontWeight: 600 }}><Star size={14} fill="currentColor" /> {listing.rating} <span style={{ color: '#94a3b8', fontWeight: 500 }}>(14)</span></div>
+                                        ) : (
+                                            <div className="muted" style={{ fontSize: '0.85rem' }}>No reviews yet</div>
                                         )}
-                                        <button className="icon-btn" style={{ background: 'transparent', padding: '0.5rem' }}><Settings size={18} /></button>
+                                    </div>
+
+                                    <div>
+                                        <div className="muted" style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.25rem', fontWeight: 600 }}>Earnings</div>
+                                        <div style={{ fontWeight: 700, fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                            {formatPrice(listing.earnings)}
+                                            {listing.status === 'Active' && <Sparkline color="#10b981" />}
+                                        </div>
+                                    </div>
+
+                                    <div style={{ textAlign: 'right' }}>
+                                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'flex-end' }}>
+                                            {hoveredListing === listing.id && (
+                                                <button 
+                                                    className="btn btn-outline btn-sm animate-fade-up" 
+                                                    onClick={() => toggleStatus(listing.id)}
+                                                    style={{ fontSize: '0.8rem', padding: '0.4rem 1rem', borderRadius: '100px', animationDuration: '0.2s' }}
+                                                >
+                                                    {listing.status === 'Active' ? 'Pause' : 'Resume'}
+                                                </button>
+                                            )}
+                                            <button className="icon-btn" style={{ background: hoveredListing === listing.id ? '#f1f5f9' : 'transparent', padding: '0.5rem' }}><Settings size={20} color={hoveredListing === listing.id ? 'var(--primary-dark)' : '#94a3b8'} /></button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))
+                            ))}
+                        </div>
                     )}
                 </div>
             </div>
