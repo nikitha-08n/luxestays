@@ -1,3 +1,21 @@
+// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCxcXyRtVNYtZJttiRSR_2XzVKmzAMxFxM",
+    authDomain: "luxestay-1b0c0.firebaseapp.com",
+    databaseURL: "https://luxestay-1b0c0-default-rtdb.firebaseio.com",
+    projectId: "luxestay-1b0c0",
+    storageBucket: "luxestay-1b0c0.firebasestorage.app",
+    messagingSenderId: "1015188177573",
+    appId: "1:1015188177573:web:11e099da859820750a034c"
+};
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
+const auth = firebase.auth();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
 // Mock Property Data
 const properties = [
     {
@@ -227,17 +245,27 @@ window.handleGoogleSignIn = function() {
     btn.innerHTML = '<span class="spinner"></span> Connecting...';
     btn.disabled = true;
 
-    setTimeout(() => {
-        btn.disabled = false;
-        btn.innerHTML = originalText;
-        
-        const navBtn = document.getElementById('nav-signin-btn');
-        if (navBtn) {
-            navBtn.textContent = '👤 Guest';
-            navBtn.onclick = () => navigateTo('dashboard-view');
-        }
-        navigateTo('home-view');
-    }, 1000);
+    auth.signInWithPopup(googleProvider)
+        .then((result) => {
+            const user = result.user;
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            
+            const navBtn = document.getElementById('nav-signin-btn');
+            if (navBtn) {
+                // Use Google profile name
+                const name = user.displayName ? user.displayName.split(' ')[0] : 'Guest';
+                navBtn.textContent = `👤 ${name}`;
+                navBtn.onclick = () => navigateTo('dashboard-view');
+            }
+            navigateTo('home-view');
+        })
+        .catch((error) => {
+            console.error("Google Sign-In Error:", error);
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+            alert("Authentication failed: " + error.message);
+        });
 };
 
 window.handleAppleSignIn = function() {
