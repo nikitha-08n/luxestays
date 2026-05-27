@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1015188177573",
+    "firebase_url": "https://luxestay-1b0c0-default-rtdb.firebaseio.com",
+    "project_id": "luxestay-1b0c0",
+    "storage_bucket": "luxestay-1b0c0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015188177573:android:11e099da859820750a034c",
+        "android_client_info": {
+          "package_name": "com.example.luxestay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015188177573-8blvvnbudska7j3a3bibseufib0hrt4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxcXyRtVNYtZJttiRSR_2XzVKmzAMxFxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015188177573-8blvvnbudska7j3a3bibseufib0hrt4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
