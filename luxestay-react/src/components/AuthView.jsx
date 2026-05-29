@@ -8,6 +8,7 @@ const AuthView = ({ onLogin, registeredUsers, onSignUp, onClose, onGoogleLogin }
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [showAppleMsg, setShowAppleMsg] = useState(false);
     
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -214,6 +215,12 @@ const AuthView = ({ onLogin, registeredUsers, onSignUp, onClose, onGoogleLogin }
                             />
                         </div>
 
+                        {isLogin && (
+                            <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', padding: '0.6rem 0.85rem', fontSize: '0.78rem', color: '#166534', marginBottom: '0.5rem', lineHeight: 1.5 }}>
+                                🔑 <strong>Demo account:</strong> ramesh@email.com · password123
+                            </div>
+                        )}
+
                         <div className="form-group">
                             <label>Password</label>
                             <div className="password-input-wrap">
@@ -264,8 +271,15 @@ const AuthView = ({ onLogin, registeredUsers, onSignUp, onClose, onGoogleLogin }
                         <span>or continue with</span>
                     </div>
 
+                    {showAppleMsg && (
+                        <div className="auth-error-alert" style={{ background: '#fff7ed', borderColor: '#fed7aa', color: '#9a3412', marginBottom: '0.75rem' }}>
+                            <AlertCircle size={18} />
+                            <span>Apple Sign-In is coming soon! Use email or Google for now.</span>
+                        </div>
+                    )}
+
                     <div className="social-auth">
-                        <button className="social-btn">
+                        <button type="button" className="social-btn" onClick={() => { setShowAppleMsg(true); setTimeout(() => setShowAppleMsg(false), 4000); }}>
                             <Apple size={20} fill="currentColor" />
                             <span>Apple</span>
                         </button>
